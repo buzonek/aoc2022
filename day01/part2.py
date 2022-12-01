@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import os.path
 
-import bisect
 import pytest
 
 import support
@@ -11,13 +10,12 @@ import support
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
-
 def compute(s: str) -> int:
     chunks = s.split('\n\n')
     items = []
     for chunk in chunks:
-        s = sum(int(x) for x in chunk.split())
-        items.append(s)
+        total = sum(int(x) for x in chunk.split())
+        items.append(total)
     items.sort()
     return sum(items[-3:])
 

@@ -7,10 +7,7 @@ import pytest
 
 import support
 
-from collections import Counter
-
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
-
 
 
 def compute(s: str) -> int:
