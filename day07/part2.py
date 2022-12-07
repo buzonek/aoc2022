@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import os.path
 
 import pytest
@@ -10,16 +11,13 @@ import support
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
+@dataclasses.dataclass
 class Node:
-    def __init__(
-        self, name: str, size: int = 0,
-        is_file: bool = False,
-    ) -> None:
-        self.size = size
-        self.name = name
-        self.childs: list[Node] = []
-        self.parent: Node | None = None
-        self.is_file = is_file
+    name: str
+    size: int = 0
+    is_file: bool = False
+    childs: list[Node] = dataclasses.field(default_factory=list)
+    parent: Node | None = None
 
 
 class Tree:
