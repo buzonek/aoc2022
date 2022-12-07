@@ -57,25 +57,22 @@ def compute(s: str) -> int:
 
     tree = Tree()
     for line in lines:
-        if line.startswith('$ cd /'):
-            tree.current_node = tree.root
-        elif line.startswith('$ cd ..'):
-            if tree.current_node.parent:
-                tree.current_node = tree.current_node.parent
-        elif line.startswith('$ cd '):
-            _, _, name = line.split()
-            tree.set_current_node(name)
-        elif line.startswith('dir'):
-            _, name = line.split()
-            node = Node(name)
-            tree.add_node(node)
-        elif line.split()[0].isalnum():
-            size, name = line.split()
-            node = Node(name, int(size), is_file=True)
-            tree.add_node(node)
-        # ls
-        else:
-            pass
+        match line.split():
+            case ['$', 'cd', '/']:
+                tree.current_node = tree.root
+            case ['$', 'cd', '..']:
+                if tree.current_node.parent:
+                    tree.current_node = tree.current_node.parent
+            case ['$', 'cd', dirname]:
+                tree.set_current_node(dirname)
+            case ['dir', dirname]:
+                node = Node(dirname)
+                tree.add_node(node)
+            case ['$', 'ls']:
+                pass
+            case [size, file_name]:
+                node = Node(file_name, int(size), is_file=True)
+                tree.add_node(node)
 
     nodes = nodes_with_size_lower_than(tree.root, limit=100000)
     return sum(node.size for node in nodes)
