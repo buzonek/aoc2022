@@ -14,31 +14,43 @@ def compute(s: str) -> int:
     matrix = [[int(number) for number in line] for line in s.splitlines()]
     width = len(matrix)
     height = len(matrix[1])
-    cnt = 0
 
-    for row_index in range(1, width-1):
-        for column_index in range(1, height-1):
+    items: set[tuple[int, int]] = set()
+
+    for row_index in range(1, height-1):
+        # go left
+        max_l = matrix[row_index][0]
+        for column_index in range(1, width-1):
             item = matrix[row_index][column_index]
-            # verify left
-            if all(num < item for num in matrix[row_index][:column_index]):
-                cnt += 1
-                continue
-            # right
-            if all(num < item for num in matrix[row_index][column_index + 1:]):
-                cnt += 1
-                continue
-            # up
-            if all(row[column_index] < item for row in matrix[:row_index]):
-                cnt += 1
-                continue
-            # down
-            if all(row[column_index] < item for row in matrix[row_index + 1:]):
-                cnt += 1
-                continue
-    # add all on the edge
-    cnt += width*2 + height*2 - 4
+            if item > max_l:
+                max_l = item
+                items.add((row_index, column_index))
 
-    return cnt
+        max_r = matrix[row_index][-1]
+        # go right backwards
+        for column_index in range(width - 1, 0, -1):
+            item = matrix[row_index][column_index]
+            if item > max_r:
+                max_r = item
+                items.add((row_index, column_index))
+
+    for column_index in range(1, width - 1):
+        # go down
+        max_u = matrix[0][column_index]
+        for row_index in range(1, height - 1):
+            item = matrix[row_index][column_index]
+            if item > max_u:
+                max_u = item
+                items.add((row_index, column_index))
+        # go up backwards
+        max_d = matrix[-1][column_index]
+        for row_index in range(height - 1, 0, -1):
+            item = matrix[row_index][column_index]
+            if item > max_d:
+                max_d = item
+                items.add((row_index, column_index))
+
+    return len(items) + width*2 + height*2 - 4
 
 
 INPUT_S = '''\
