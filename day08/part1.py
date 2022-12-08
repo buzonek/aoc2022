@@ -11,13 +11,11 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def compute(s: str) -> int:
-    lines = s.splitlines()
-    matrix: list[list[int]] = [[] for _ in range(len(lines))]
-    for index, line in enumerate(lines):
-        matrix[index] = [int(number) for number in line]
+    matrix = [[int(number) for number in line] for line in s.splitlines()]
     width = len(matrix)
     height = len(matrix[1])
     cnt = 0
+
     for row_index in range(1, width-1):
         for column_index in range(1, height-1):
             item = matrix[row_index][column_index]
