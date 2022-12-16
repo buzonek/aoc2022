@@ -28,6 +28,7 @@ repos:
     rev: v2.0.0
     hooks:
     -   id: autopep8
+        args: [--max-line-length=80]
 -   repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
@@ -36,9 +37,3 @@ repos:
     rev: v0.991
     hooks:
     -   id: mypy
--   repo: https://github.com/psf/black
-    rev: 22.3.0
-    hooks:
-    -   id: black
-        args:
-        - --line-length=79
